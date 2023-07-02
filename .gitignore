@@ -1,2 +1,5 @@
 .idea/
 twitter_2/__pycache__/
+__pycache__/
+home/__pycache__/
+home/migrations/__pycache__/
