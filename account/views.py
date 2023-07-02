@@ -4,7 +4,7 @@ from django.views import View
 
 class RegisterView(View):
     def get(self, request):
-        pass
+        return render(request, 'account/register.html')
 
     def post(self, request):
         pass
