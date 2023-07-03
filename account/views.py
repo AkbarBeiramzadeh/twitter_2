@@ -65,7 +65,6 @@ class UserLogoutView(LoginRequiredMixin,View):
 # ازث بری از LoginRequiredMixin یعنی :
 # کاربرانی که لاگین کرده اند می توانند به لاگ آوت دسترسی داشته باشند
     def get(self, request):
-        logout(request)
-        # messages.success(request, 'you logged out successfully', 'success')
         messages.success(request, f'{request.user} logged out successfully', 'success')
+        logout(request)
         return redirect('home:home')
