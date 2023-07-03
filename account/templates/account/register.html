@@ -7,7 +7,7 @@
 {% block content %}
     <h2 style="color: deeppink">Register User</h2>
     <hr>
-    <form action="" method="post" class="col-md-6" style="color: blue;">
+    <form action="" method="post" class="col-md-6" style="color: blue;" novalidate>
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Register">
