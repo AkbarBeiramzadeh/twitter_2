@@ -10,6 +10,13 @@ class UserRegisterView(View):
     form_class = UserRegistrationForm
     template_name = 'account/register.html'
 
+    # این متد قبل از تمامی متدها اجرا میشود
+    # اگر کاربر لاگین کرده باشد با نوشتن آدرس url به صفحه home هدایت می شود
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('home:home')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request):
         form = self.form_class
         context = {
@@ -31,6 +38,11 @@ class UserLoginView(View):
     form_class = UserLoginForm
     template_name = 'account/login.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('home:home')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request):
         form = self.form_class
         return render(request, self.template_name, {'form': form})
@@ -51,7 +63,7 @@ class UserLoginView(View):
 class UserLogoutView(View):
 
     def get(self, request):
-
         logout(request)
-        messages.success(request, 'you logged out successfully', 'success')
+        # messages.success(request, 'you logged out successfully', 'success')
+        messages.success(request, f'{request.user} logged out successfully', 'success')
         return redirect('home:home')
