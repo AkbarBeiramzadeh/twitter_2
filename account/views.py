@@ -61,10 +61,16 @@ class UserLoginView(View):
         return render(request, self.template_name, {'form': form})
 
 
-class UserLogoutView(LoginRequiredMixin,View):
-# ازث بری از LoginRequiredMixin یعنی :
-# کاربرانی که لاگین کرده اند می توانند به لاگ آوت دسترسی داشته باشند
+class UserLogoutView(LoginRequiredMixin, View):
+    # ازث بری از LoginRequiredMixin یعنی :
+    # کاربرانی که لاگین کرده اند می توانند به لاگ آوت دسترسی داشته باشند
     def get(self, request):
         messages.success(request, f'{request.user} logged out successfully', 'success')
         logout(request)
         return redirect('home:home')
+
+
+class UserProfileView(LoginRequiredMixin, View):
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        return render(request, 'account/profile.html', {'user': user})
