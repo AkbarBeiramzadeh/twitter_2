@@ -6,4 +6,12 @@
 
 {% block content %}
 Index page
+
+    <div class="card">
+        {% for post in posts %}
+            <p style="color: blue">{{ post.user }}:</p>
+            <a href="{% url 'home:post_detail' post_id=post.id post_slug=post.slug %}" class="card-body" style="text-decoration: none">{{ post.body|truncatewords:20 }}</a><hr>
+        {% endfor %}
+
+    </div>
 {% endblock %}
