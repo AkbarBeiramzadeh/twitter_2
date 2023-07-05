@@ -11,6 +11,9 @@ class Post(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-created']  # مرتب سازی پست ها بر اساس تاریخ
+
     def get_absolute_url(self):
         return reverse('home:post_detail', args=(self.id, self.slug))
 
