@@ -4,7 +4,7 @@ from django.urls import reverse
 
 
 class Post(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # اگر یک یوزر حذف شد پست هایش نیز حذف می شود.
+    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='posts')  # اگر یک یوزر حذف شد پست هایش نیز حذف می شود.
     title = models.CharField(max_length=240)
     body = models.TextField()
     slug = models.SlugField()
