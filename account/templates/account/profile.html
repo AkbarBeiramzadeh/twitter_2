@@ -6,11 +6,16 @@
 
 {% block content %}
     <h2 class="text-center">{{ user.username }}</h2>
+    {% if request.user.id == user.id %}
+        <a href="{% url 'home:post_create' %}" class="btn btn-info">New Post +</a>
+    {% endif %}
     <hr>
     <div class="card">
         {% for post in posts %}
             <p style="color: blue">{{ post.user }}:</p>
-            <a href="{{ post.get_absolute_url }}" class="card-body" style="text-decoration: none">{{ post.body|truncatewords:20 }}</a><hr>
+            <a href="{{ post.get_absolute_url }}" class="card-body"
+               style="text-decoration: none">{{ post.body|truncatewords:20 }}</a>
+            <hr>
         {% endfor %}
 
     </div>
