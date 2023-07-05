@@ -5,8 +5,11 @@
 {% endblock %}
 
 {% block content %}
+    {% if request.user.id == post.user.id %}
+    <a href="{% url 'home:post_delete' post.id %}" class="btn btn-danger">Delete</a>
+    {% endif %}
     <div class="card">
-    <p style="color: blue;">{{ post.user }} - {{ post.updated|date:"Y-M-D" }}</p>
+    <p style="color: black;"><a href="{% url 'account:user_profile' post.user.id %}" style="text-decoration: none">{{ post.user }}</a> - {{ post.updated|date:"Y-M-D" }}</p>
     <h5 style="color: black">{{ post.title }}</h5>
     <p>{{ post.body }}</p>
     </div>
