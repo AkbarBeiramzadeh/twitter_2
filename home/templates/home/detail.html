@@ -13,5 +13,15 @@
     <p style="color: black;"><a href="{% url 'account:user_profile' post.user.id %}" style="text-decoration: none">{{ post.user }}</a> - {{ post.updated|date:"Y-M-D" }}</p>
     <h5 style="color: black">{{ post.title }}</h5>
     <p>{{ post.body }}</p>
+        <hr>
+    {% for comment in comments %}
+        <div class="card bg-dark text-white">
+        <p class="card-header">{{ comment.user }} | {{ comment.created | timesince }}</p>
+        <p class="card-body">{{ comment.body }}</p>
+        </div>
+    {% empty %}
+        <p>No comments yet!</p>
+    {% endfor %}
+
     </div>
 {% endblock %}
