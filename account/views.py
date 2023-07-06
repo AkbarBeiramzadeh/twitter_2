@@ -73,9 +73,13 @@ class UserLogoutView(LoginRequiredMixin, View):
 
 class UserProfileView(LoginRequiredMixin, View):
     def get(self, request, user_id):
+        is_following = False
         user = get_object_or_404(User, pk=user_id)
         posts = user.posts.all()
-        return render(request, 'account/profile.html', {'user': user, 'posts': posts})
+        relation = Relation.objects.filter(from_user=request.user,to_user=user)
+        if relation.exists():
+            is_following = True
+        return render(request, 'account/profile.html', {'user': user, 'posts': posts, 'is_following':is_following})
 
 
 class UserFollowView(LoginRequiredMixin, View):
@@ -100,4 +104,4 @@ class UserUnFollowView(LoginRequiredMixin, View):
             messages.success(request, f'you unfollowed {user}', 'success')
         else:
             messages.error(request, f'you are not following {user}', 'danger')
-            return redirect('account:user_profile', user.id)
+        return redirect('account:user_profile', user.id)
