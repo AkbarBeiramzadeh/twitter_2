@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from .models import Relation
 
 
 class UserRegisterView(View):
@@ -76,3 +76,28 @@ class UserProfileView(LoginRequiredMixin, View):
         user = get_object_or_404(User, pk=user_id)
         posts = user.posts.all()
         return render(request, 'account/profile.html', {'user': user, 'posts': posts})
+
+
+class UserFollowView(LoginRequiredMixin, View):
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        relation = Relation.objects.filter(from_user=request.user, to_user=user)
+        #  نکته : exists فقط روی filter اعمال می شود
+        if relation.exists():
+            messages.error(request, 'you are already following this user', 'danger')
+        else:
+            Relation(from_user=request.user, to_user=user).save()
+            messages.success(request, f'you followed {user} successfully')
+        return redirect('account:user_profile', user.id)
+
+
+class UserUnFollowView(LoginRequiredMixin, View):
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        relation = Relation.objects.filter(from_user=request.user, to_user=user)
+        if relation.exists():
+            relation.delete()
+            messages.success(request, f'you unfollowed {user}', 'success')
+        else:
+            messages.error(request, f'you are not following {user}', 'danger')
+            return redirect('account:user_profile', user.id)
