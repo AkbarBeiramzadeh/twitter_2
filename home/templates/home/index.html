@@ -5,8 +5,12 @@
 {% endblock %}
 
 {% block content %}
-Index page
 
+    <form action="" method="get">
+        {{ form }}
+        <input type="submit" value="Search">
+    </form>
+    <br>
     <div class="card">
         {% for post in posts %}
             <p style="color: blue">{{ post.user }}:</p>
