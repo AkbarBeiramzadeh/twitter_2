@@ -3,7 +3,7 @@ from django.views import View
 from .models import Post, Comment, Vote
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import PostCreateUpdateForm, CommentCreateForm, CommentReplyForm
+from .forms import PostCreateUpdateForm, CommentCreateForm, CommentReplyForm, PostSearchForm
 from django.utils.text import slugify
 from unidecode import unidecode
 from django.contrib.auth.decorators import login_required
@@ -11,10 +11,13 @@ from django.utils.decorators import method_decorator
 
 
 class HomeView(View):
+    form_class = PostSearchForm
+
     def get(self, request):
         posts = Post.objects.all()
         context = {
-            'posts': posts
+            'posts': posts,
+            'form': self.form_class
         }
         return render(request, template_name='home/index.html', context=context)
 
@@ -38,7 +41,7 @@ class PostDetailView(View):
                        'comments': comments,
                        'form': self.form_class,
                        'reply_form': self.form_class_reply,
-                       'can_like':can_like
+                       'can_like': can_like
                        })
 
     @method_decorator(login_required)
