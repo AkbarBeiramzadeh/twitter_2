@@ -18,6 +18,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('home:post_detail', args=(self.id, self.slug))
 
+    def likes_count(self):
+        return self.pvotes.count()
+
     def __str__(self):
         return f"{self.user} / {self.title}"
 
