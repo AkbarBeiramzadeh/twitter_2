@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Relation
+from .models import Relation, Profile
 
 
 class UserRegisterView(View):
@@ -30,7 +30,8 @@ class UserRegisterView(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            User.objects.create_user(cd['username'], cd['email'], cd['password1'])
+            user = User.objects.create_user(cd['username'], cd['email'], cd['password1'])
+            Profile.objects.create(user=user)
             messages.success(request, 'you registered successfully', 'success')
             return redirect('home:home')
         return render(request, self.template_name, {'form': form})
