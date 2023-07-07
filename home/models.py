@@ -21,6 +21,12 @@ class Post(models.Model):
     def likes_count(self):
         return self.pvotes.count()
 
+    def user_can_like(self, user:User):
+        user_like = user.uvotes.filter(post=self)
+        if user_like.exists():
+            return True
+        return False
+
     def __str__(self):
         return f"{self.user} / {self.title}"
 
